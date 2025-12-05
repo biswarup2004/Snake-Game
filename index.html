@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - Neon Edition</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Added for PWA install (no UI changes) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+</head>
+<body>
+    <main>
+        <h1>🐍 SNAKE GAME</h1>
+        <div class="game-container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label">High Score</div>
+                    <div class="stat-value" id="high-score">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Time</div>
+                    <div class="stat-value" id="time">00:00</div>
+                </div>
+            </div>
+            <div class="board-wrapper">
+                <div class="board"></div>
+            </div>
+            <div class="controls">
+                <button class="control-btn up" data-direction="up">↑</button>
+                <button class="control-btn left" data-direction="left">←</button>
+                <button class="control-btn down" data-direction="down">↓</button>
+                <button class="control-btn right" data-direction="right">→</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal">
+        <div class="start-game">
+            <div class="modal-content">
+                <h3>Welcome to Snake Game</h3>
+                <p>Use arrow keys or touch controls to move</p>
+                <button class="btn btn-start">Start Game</button>
+            </div>
+        </div>
+        <div class="game-over">
+            <div class="modal-content">
+                <h3>Game Over!</h3>
+                <div class="final-score">Your Score: <span id="final-score">0</span></div>
+                <div class="new-high-score" id="new-high-score" style="display: none;">🎉 New High Score! 🎉</div>
+                <button class="btn btn-restart">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
