@@ -19,6 +19,7 @@ const timeElement = document.querySelector("#time");
 const finalScoreElement = document.querySelector("#final-score");
 const newHighScoreElement = document.querySelector("#new-high-score");
 const controlButtons = document.querySelectorAll(".control-btn");
+const pauseButton = document.querySelector(".btn-toggle");
 
 let highScore = 0;
 let score = 0;
@@ -26,6 +27,7 @@ let seconds = 0;
 let minutes = 0;
 let timeIntervalId = null;
 let intervalId = null;
+let isPaused = false;
 
 highScoreElement.innerText = highScore;
 
@@ -102,14 +104,48 @@ function initGameState() {
 }
 
 function animateScore() {
-    scoreElement.classList.add('pulse');
-    setTimeout(() => scoreElement.classList.remove('pulse'), 300);
+    scoreElement.classList.add("pulse");
+    setTimeout(() => scoreElement.classList.remove("pulse"), 300);
+}
+
+function updatePauseButton() {
+    if (!pauseButton) return;
+    pauseButton.textContent = isPaused ? "Play" : "Pause";
+}
+
+function pauseGame() {
+    if (isPaused) return;
+    isPaused = true;
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+    stopTimer();
+    updatePauseButton();
+}
+
+function resumeGame() {
+    if (!isPaused) return;
+    isPaused = false;
+    if (!intervalId) {
+        intervalId = setInterval(render, 300);
+    }
+    startTimer();
+    updatePauseButton();
+}
+
+function togglePause() {
+    if (!intervalId && !isPaused) return;
+    if (isPaused) resumeGame();
+    else pauseGame();
 }
 
 function gameOver() {
     clearInterval(intervalId);
     intervalId = null;
     stopTimer();
+    isPaused = false;
+    updatePauseButton();
     finalScoreElement.innerText = score;
     
     let isNewHighScore = false;
@@ -117,9 +153,9 @@ function gameOver() {
         highScore = score;
         highScoreElement.innerText = highScore;
         isNewHighScore = true;
-        newHighScoreElement.style.display = 'block';
+        newHighScoreElement.style.display = "block";
     } else {
-        newHighScoreElement.style.display = 'none';
+        newHighScoreElement.style.display = "none";
     }
     
     modal.style.display = "flex";
@@ -173,8 +209,8 @@ function render() {
         if (score > highScore) {
             highScore = score;
             highScoreElement.innerText = highScore;
-            highScoreElement.classList.add('pulse');
-            setTimeout(() => highScoreElement.classList.remove('pulse'), 300);
+            highScoreElement.classList.add("pulse");
+            setTimeout(() => highScoreElement.classList.remove("pulse"), 300);
         }
         
         spawnFood();
@@ -200,6 +236,9 @@ addEventListener("keydown", e => {
     } else if (e.key === "ArrowRight") {
         e.preventDefault();
         changeDirection("right");
+    } else if (e.code === "Space") {
+        e.preventDefault();
+        togglePause();
     }
 });
 
@@ -215,9 +254,11 @@ startButton.addEventListener("click", () => {
     initGameState();
     modal.style.display = "none";
     render();
+    isPaused = false;
+    updatePauseButton();
     intervalId = setInterval(render, 300);
     startTimer();
-     if (deferredPrompt) {
+    if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.finally(() => {
             deferredPrompt = null;
@@ -233,11 +274,20 @@ restartButton.addEventListener("click", () => {
     modal.style.display = "none";
     gameOverModal.style.display = "none";
     render();
+    isPaused = false;
+    updatePauseButton();
     intervalId = setInterval(render, 300);
     startTimer();
 });
+
+if (pauseButton) {
+    pauseButton.addEventListener("click", togglePause);
+}
+
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js").catch(() => {});
     });
 }
+
+updatePauseButton();
