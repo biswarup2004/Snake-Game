@@ -412,3 +412,21 @@ h1 {
         transform:none;
     }
 }
+.btn-toggle{
+    padding: 1rem 1rem;
+    margin-top: 7px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(45deg, #00ff87, #60efff);
+    color: #0f0c29;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 255, 135, 0.3);
+    -webkit-tap-highlight-color: transparent;
+}
+.play-pause-img{
+    height: 18px;
+    width: 18px;
+}

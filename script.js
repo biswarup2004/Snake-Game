@@ -20,6 +20,7 @@ const finalScoreElement = document.querySelector("#final-score");
 const newHighScoreElement = document.querySelector("#new-high-score");
 const controlButtons = document.querySelectorAll(".control-btn");
 const pauseButton = document.querySelector(".btn-toggle");
+const pauseIcon = document.querySelector(".play-pause-img");
 
 let highScore = 0;
 let score = 0;
@@ -109,9 +110,17 @@ function animateScore() {
 }
 
 function updatePauseButton() {
-    if (!pauseButton) return;
-    pauseButton.textContent = isPaused ? "Play" : "Pause";
+    if (!pauseIcon) return;
+
+    if (isPaused) {
+        pauseIcon.src = "New folder/play.png";  // image when paused
+        pauseIcon.alt = "Play";
+    } else {
+        pauseIcon.src = "New folder/pause.png"; // image when playing
+        pauseIcon.alt = "Pause";
+    }
 }
+
 
 function pauseGame() {
     if (isPaused) return;
