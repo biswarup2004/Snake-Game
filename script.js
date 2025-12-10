@@ -208,7 +208,7 @@ function render() {
         foodBlock.classList.add("food-eaten");
         setTimeout(() => {
             foodBlock.classList.remove("food", "food-eaten");
-        }, 300);
+        }, 400);
         
         snake.unshift(head);
         score += 10;
